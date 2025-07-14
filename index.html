@@ -19,6 +19,7 @@
     h1 {
       font-size: 2.5rem;
       color: #6e41a2;
+      margin: 0;
     }
     p {
       font-size: 1.2rem;
@@ -26,14 +27,17 @@
       margin: 1rem auto;
       line-height: 1.6;
     }
+    main {
+      padding: 0 1rem 2rem;
+    }
     .cta {
       text-align: center;
       margin: 2rem;
     }
     button {
       background-color: #6e41a2;
-      color: white;
-      padding: 1rem 2rem;
+      color: #fff;
+      padding: 0.8rem 1.6rem;
       border: none;
       border-radius: 8px;
       font-size: 1rem;
@@ -48,6 +52,30 @@
       font-size: 0.9rem;
       color: #888;
     }
+    form {
+      max-width: 500px;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    select, input {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    #resultado {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1.2rem;
+      background: #fff;
+      border-left: 4px solid #6e41a2;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -58,20 +86,59 @@
 
   <main>
     <p><strong>Você errou com quem ama? Está tentando reconquistar alguém importante? Ou apenas precisa dizer o que sente, mas não sabe como?</strong></p>
+    <p><strong>Palavras que Curam</strong> gera mensagens personalizadas para reconciliação, perdão, recomeços e momentos difíceis.</p>
 
-    <p><strong>Palavras que Curam</strong> é um aplicativo simples e direto que cria mensagens emocionais personalizadas para reconciliação, perdão, recomeços e momentos difíceis.</p>
+    <form id="geradorForm">
+      <label for="categoria">Escolha a categoria:</label>
+      <select id="categoria" required>
+        <option value="perdao">Perdão</option>
+        <option value="reconquista">Reconquista</option>
+        <option value="paz">Paz</option>
+      </select>
 
-    <p>Com apenas alguns cliques, você gera textos tocantes, cartas sinceras ou frases curtas prontas para serem enviadas ou postadas.</p>
+      <label for="nome">Nome da pessoa (opcional):</label>
+      <input type="text" id="nome" placeholder="Ex.: Juliana">
 
-    <p>Ideal para casais em crise, pais em busca de reconexão ou qualquer pessoa que precise expressar o que sente com profundidade e verdade.</p>
+      <button type="submit">Gerar mensagem</button>
+    </form>
 
-    <div class="cta">
-      <button type="button" onclick="alert('Em breve! Cadastre-se para saber primeiro.')">Quero testar grátis</button>
-    </div>
+    <div id="resultado"></div>
   </main>
 
   <footer>
     &copy; 2025 Palavras que Curam · Feito com alma para quem sente.
   </footer>
+
+  <script>
+    const mensagens = {
+      perdao: [
+        "Se eu pudesse voltar no tempo, {{nome}}, faria tudo diferente. Hoje, só posso te oferecer meu arrependimento sincero e a vontade de reconstruir nossa história lado a lado.",
+        "Errar com você foi o golpe mais duro que já me dei. Peço perdão, {{nome}}, e a chance de mostrar que aprendi com cada dor que causei."
+      ],
+      reconquista: [
+        "{{nome}}, não estou aqui para insistir nem pressionar. Só quero dizer que o sentimento permanece inteiro e que, se ainda houver espaço, quero recomeçar com verdade e calma.",
+        "Nada do que vivi se compara ao que sonhei viver ao seu lado. Caso exista uma brecha, {{nome}}, quero tentar outra vez – com mais amor e sensatez."
+      ],
+      paz: [
+        "Nem todo amor termina; às vezes, ele encontra outra forma. Desejo que sua vida seja leve, {{nome}}, mesmo se nossos caminhos seguirem distantes.",
+        "Que a paz encontre você, {{nome}}. Guardo respeito e carinho pelo que fomos e pelo que cada um ainda pode ser." 
+      ]
+    };
+
+    function gerarAleatoria(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    document.getElementById('geradorForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const cat = document.getElementById('categoria').value;
+      const nome = document.getElementById('nome').value.trim() || 'você';
+      let template = gerarAleatoria(mensagens[cat]);
+      const texto = template.replace(/\{\{nome\}\}/g, nome);
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.textContent = texto;
+      resultadoDiv.style.display = 'block';
+    });
+  </script>
 </body>
 </html>
