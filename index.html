@@ -79,7 +79,7 @@
     <label for="nome">Nome da pessoa (opcional):</label>
     <input type="text" id="nome" placeholder="Ex.: Clara" />
 
-    <button type="submit">Gerar mensagem</button>
+    <button id="gerarBtn" type="submit">Gerar mensagem</button>
   </form>
 
   <div id="resultado"></div>
@@ -94,9 +94,9 @@
 </footer>
 
 <script type="module">
-  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js");
-  const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js");
-  const { getFirestore, doc, getDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js");
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC6EWkFSg6bBExoH4-GlV_dt80WlR9XfOk",
@@ -168,9 +168,11 @@
     document.getElementById("acoes").style.display = "flex";
   }
 
-  document.getElementById("geradorForm").addEventListener("submit", gerarMensagem);
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("geradorForm").addEventListener("submit", gerarMensagem);
+  });
 
-  onAuthStateChanged(auth, async user => {
+  onAuthStateChanged(auth, user => {
     const authArea = document.getElementById("authArea");
     const userArea = document.getElementById("userArea");
     const geradorForm = document.getElementById("geradorForm");
