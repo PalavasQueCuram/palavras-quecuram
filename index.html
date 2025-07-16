@@ -15,7 +15,7 @@
   <!-- /SEO -->
 
   <!-- Google Analytics GA‏-4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-79LF955TM4"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -99,9 +99,6 @@
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     signOut, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-  import {
-    getFirestore, doc, getDoc, setDoc
-  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC6EWkFSg6bBExoH4-GlV_dt80WlR9XfOk",
@@ -114,8 +111,6 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
-  const db = getFirestore();
-  const LIMITE_DIARIO = 3;
 
   const mensagens = {
     perdao: [
@@ -132,37 +127,8 @@
     ]
   };
 
-  document.getElementById("geradorForm").addEventListener("submit", async function gerarMensagem(e) {
+  document.getElementById("geradorForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    const user = auth.currentUser;
-    if (!user) {
-      alert("Você precisa estar logado para gerar mensagens.");
-      return;
-    }
-
-    const uid = user.uid;
-    const today = new Date().toISOString().split("T")[0];
-    const docRef = doc(db, "limites", uid);
-    const docSnap = await getDoc(docRef);
-
-    let dados = { data: today, contador: 0 };
-
-    if (docSnap.exists()) {
-      const dataSalva = docSnap.data();
-      if (dataSalva.data === today) {
-        if (dataSalva.contador >= LIMITE_DIARIO) {
-          alert("Você atingiu o limite gratuito de hoje. Volte amanhã ou assine para acesso ilimitado.");
-          return;
-        } else {
-          dados = dataSalva;
-        }
-      }
-    }
-
-    dados.contador += 1;
-    dados.data = today;
-    await setDoc(docRef, dados);
-
     const cat = document.getElementById("categoria").value;
     const nome = document.getElementById("nome").value.trim() || "você";
     const texto = mensagens[cat][Math.floor(Math.random() * mensagens[cat].length)].replace(/\{\{nome\}\}/g, nome);
@@ -171,6 +137,7 @@
     res.textContent = texto;
     res.style.display = "block";
     document.getElementById("acoes").style.display = "flex";
+    if (typeof gtag === "function") gtag('event', 'gerar_mensagem', { categoria: cat });
   });
 
   onAuthStateChanged(auth, user => {
@@ -223,7 +190,7 @@
     const txt = document.getElementById("resultado").textContent;
     navigator.clipboard.writeText(txt).then(() => {
       alert("Copiado!");
-      gtag && gtag('event', 'copiar_mensagem');
+      if (typeof gtag === "function") gtag('event', 'copiar_mensagem');
     });
   });
 
@@ -231,7 +198,7 @@
     const txt = document.getElementById("resultado").textContent;
     const url = `https://wa.me/?text=${encodeURIComponent(txt)}`;
     window.open(url, "_blank");
-    gtag && gtag('event', 'whatsapp_share');
+    if (typeof gtag === "function") gtag('event', 'whatsapp_share');
   });
 </script>
 </body>
