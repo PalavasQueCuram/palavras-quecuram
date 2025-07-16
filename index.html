@@ -82,10 +82,8 @@
     <button type="submit">Gerar mensagem</button>
   </form>
 
-  <!-- Resultado -->
   <div id="resultado"></div>
 
-  <!-- Ações -->
   <div class="actions" id="acoes" style="display:none">
     <button id="copiarBtn">Copiar mensagem</button>
     <button id="whatsBtn">Compartilhar no WhatsApp</button>
@@ -116,52 +114,6 @@
     const db = getFirestore();
     const LIMITE_DIARIO = 3;
 
-    onAuthStateChanged(auth, async user => {
-      const authArea = document.getElementById("authArea");
-      const userArea = document.getElementById("userArea");
-      const geradorForm = document.getElementById("geradorForm");
-      const acoes = document.getElementById("acoes");
-
-      if (user) {
-        document.getElementById("userEmail").textContent = user.email;
-        authArea.style.display = "none";
-        userArea.style.display = "block";
-        geradorForm.style.display = "block";
-      } else {
-        userArea.style.display = "none";
-        authArea.style.display = "block";
-        geradorForm.style.display = "none";
-        acoes.style.display = "none";
-        document.getElementById("resultado").style.display = "none";
-      }
-    });
-
-    window.registrar = async function () {
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      try {
-        await createUserWithEmailAndPassword(auth, email, senha);
-        alert("Conta criada!");
-      } catch (e) {
-        alert("Erro: " + e.message);
-      }
-    };
-
-    window.entrar = async function () {
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, senha);
-        alert("Login bem-sucedido!");
-      } catch (e) {
-        alert("Erro: " + e.message);
-      }
-    };
-
-    window.sair = async function () {
-      await signOut(auth);
-    };
-
     const mensagens = {
       perdao:[
         "Se eu pudesse voltar no tempo, {{nome}}, faria tudo diferente. Hoje, só posso te oferecer meu arrependimento sincero e a vontade de reconstruir nossa história lado a lado.",
@@ -177,7 +129,7 @@
       ]
     };
 
-    document.getElementById("geradorForm").addEventListener("submit", async function(e){
+    async function gerarMensagem(e) {
       e.preventDefault();
       const user = auth.currentUser;
       if (!user) return;
@@ -213,7 +165,54 @@
       res.textContent = texto;
       res.style.display = "block";
       document.getElementById("acoes").style.display = "flex";
+    }
+
+    onAuthStateChanged(auth, async user => {
+      const authArea = document.getElementById("authArea");
+      const userArea = document.getElementById("userArea");
+      const geradorForm = document.getElementById("geradorForm");
+      const acoes = document.getElementById("acoes");
+
+      if (user) {
+        document.getElementById("userEmail").textContent = user.email;
+        authArea.style.display = "none";
+        userArea.style.display = "block";
+        geradorForm.style.display = "block";
+        geradorForm.addEventListener("submit", gerarMensagem);
+      } else {
+        userArea.style.display = "none";
+        authArea.style.display = "block";
+        geradorForm.style.display = "none";
+        acoes.style.display = "none";
+        document.getElementById("resultado").style.display = "none";
+      }
     });
+
+    window.registrar = async function () {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      try {
+        await createUserWithEmailAndPassword(auth, email, senha);
+        alert("Conta criada!");
+      } catch (e) {
+        alert("Erro: " + e.message);
+      }
+    };
+
+    window.entrar = async function () {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
+        alert("Login bem-sucedido!");
+      } catch (e) {
+        alert("Erro: " + e.message);
+      }
+    };
+
+    window.sair = async function () {
+      await signOut(auth);
+    };
 
     document.getElementById("copiarBtn").addEventListener("click",()=>{
       const txt=document.getElementById("resultado").textContent;
