@@ -83,7 +83,6 @@
   </form>
 
   <div id="resultado"></div>
-
   <div class="actions" id="acoes" style="display:none">
     <button id="copiarBtn">Copiar mensagem</button>
     <button id="whatsBtn">Compartilhar no WhatsApp</button>
@@ -132,7 +131,10 @@
     async function gerarMensagem(e) {
       e.preventDefault();
       const user = auth.currentUser;
-      if (!user) return;
+      if (!user) {
+        alert("Você precisa estar logado para gerar mensagens.");
+        return;
+      }
 
       const uid = user.uid;
       const today = new Date().toISOString().split("T")[0];
@@ -167,6 +169,8 @@
       document.getElementById("acoes").style.display = "flex";
     }
 
+    document.getElementById("geradorForm").addEventListener("submit", gerarMensagem);
+
     onAuthStateChanged(auth, async user => {
       const authArea = document.getElementById("authArea");
       const userArea = document.getElementById("userArea");
@@ -178,7 +182,6 @@
         authArea.style.display = "none";
         userArea.style.display = "block";
         geradorForm.style.display = "block";
-        geradorForm.addEventListener("submit", gerarMensagem);
       } else {
         userArea.style.display = "none";
         authArea.style.display = "block";
