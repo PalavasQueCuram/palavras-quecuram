@@ -6,29 +6,25 @@
 
   <!-- SEO -->
   <title>Palavras que Curam | Mensagens para Perdão, Reconquista e Paz</title>
-  <meta name="description"
-        content="Gere cartas e mensagens emocionais prontas para perdão, reconquista e paz. Copie ou compartilhe com um clique." />
-  <meta name="keywords"
-        content="mensagem de perdão, carta de reconquista, frases emocionais, palavras que curam, reconciliação" />
+  <meta name="description" content="Gere cartas e mensagens emocionais prontas para perdão, reconquista e paz. Copie ou compartilhe com um clique." />
+  <meta name="keywords" content="mensagem de perdão, carta de reconquista, frases emocionais, palavras que curam, reconciliação" />
   <meta property="og:title" content="Palavras que Curam" />
-  <meta property="og:description"
-        content="Crie mensagens personalizadas para quem você ama: perdão, reconquista, paz e muito mais." />
+  <meta property="og:description" content="Crie mensagens personalizadas para quem você ama: perdão, reconquista, paz e muito mais." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://palavras-quecuram.vercel.app" />
   <!-- /SEO -->
 
-  <!-- Google Analytics GA‑4 -->
+  <!-- Google Analytics GA‑4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+    gtag('config', 'G-79LF955TM4');
   </script>
   <!-- /GA -->
 
-  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Open+Sans&display=swap"
-        rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Open+Sans&display=swap" rel="stylesheet" />
   <style>
     body{
       font-family:'Open Sans',sans-serif;
@@ -54,6 +50,19 @@
   <h1>Palavras que Curam</h1>
   <p>Reconquiste. Perdoe. Inspire. Envie mensagens emocionais criadas sob medida para momentos que pedem mais do que palavras comuns.</p>
 </header>
+
+<div id="authArea" style="max-width:400px;margin:2rem auto;display:none;text-align:center">
+  <h2>Entrar / Criar Conta</h2>
+  <input type="email" id="email" placeholder="E-mail" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
+  <input type="password" id="senha" placeholder="Senha" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
+  <button onclick="registrar()">Criar conta</button>
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<div style="text-align:center;display:none" id="userArea">
+  <p>Bem-vindo, <span id="userEmail"></span>!</p>
+  <button onclick="sair()">Sair</button>
+</div>
 
 <main>
   <p><strong>Você errou com quem ama? Está tentando reconquistar alguém importante? Ou apenas precisa dizer o que sente, mas não sabe como?</strong></p>
@@ -84,97 +93,34 @@
 </main>
 
 <footer>
-  © 2025 Palavras que Curam · Feito com alma para quem sente.
+  © 2025 Palavras que Curam · Feito com alma para quem sente.
 </footer>
 
-<script>
-const mensagens={
-  perdao:[
-    "Se eu pudesse voltar no tempo, {{nome}}, faria tudo diferente. Hoje, só posso te oferecer meu arrependimento sincero e a vontade de reconstruir nossa história lado a lado.",
-    "Errar com você foi o golpe mais duro que já me dei. Peço perdão, {{nome}}, e a chance de mostrar que aprendi com cada dor que causei."
-  ],
-  reconquista:[
-    "{{nome}}, não estou aqui para insistir nem pressionar. Só quero dizer que o sentimento permanece inteiro e que, se ainda houver espaço, quero recomeçar com verdade e calma.",
-    "Nada do que vivi se compara ao que sonhei viver ao seu lado. Caso exista uma brecha, {{nome}}, quero tentar outra vez – com mais amor e sensatez."
-  ],
-  paz:[
-    "Nem todo amor termina; às vezes, ele encontra outra forma. Desejo que sua vida seja leve, {{nome}}, mesmo se nossos caminhos seguirem distantes.",
-    "Que a paz encontre você, {{nome}}. Guardo respeito e carinho pelo que fomos e pelo que cada um ainda pode ser."
-  ]
-};
-
-function aleatoria(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-document.getElementById("geradorForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const cat=document.getElementById("categoria").value;
-  const nome=document.getElementById("nome").value.trim()||"você";
-  const texto=aleatoria(mensagens[cat]).replace(/\\{\\{nome\\}\\}/g,nome);
-
-  const res=document.getElementById("resultado");
-  res.textContent=texto;
-  res.style.display="block";
-
-  document.getElementById("acoes").style.display="flex";
-  // GA event
-  gtag&&gtag('event','gerar_mensagem',{categoria:cat});
-});
-
-// Copiar
-document.getElementById("copiarBtn").addEventListener("click",()=>{
-  const txt=document.getElementById("resultado").textContent;
-  navigator.clipboard.writeText(txt).then(()=>{
-    alert("Copiado!");
-    gtag&&gtag('event','copiar_mensagem');
-  });
-});
-
-// WhatsApp
-document.getElementById("whatsBtn").addEventListener("click",()=>{
-  const txt=document.getElementById("resultado").textContent;
-  const url=`https://wa.me/?text=${encodeURIComponent(txt)}`;
-  window.open(url,"_blank");
-  gtag&&gtag('event','whatsapp_share');
-});
-</script>
-</body>
-</html>
-<!-- 🔐 Login -->
-<div id="authArea" style="max-width:400px;margin:2rem auto;display:none;text-align:center">
-  <h2>Entrar / Criar Conta</h2>
-  <input type="email" id="email" placeholder="E-mail" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
-  <input type="password" id="senha" placeholder="Senha" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
-  <button onclick="registrar()">Criar conta</button>
-  <button onclick="entrar()">Entrar</button>
-</div>
-
-<div style="text-align:center;display:none" id="userArea">
-  <p>Bem-vindo, <span id="userEmail"></span>!</p>
-  <button onclick="sair()">Sair</button>
-</div>
-
 <script type="module">
-  // 🧩 Firebase v9 Modular
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     signOut, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
   const firebaseConfig = {
-  apiKey: "AIzaSyC6EWkFSg6bBExoH4-GlV_dt80WlR9XfOk",
-  authDomain: "palavras-que-curam-31618.firebaseapp.com",
-  projectId: "palavras-que-curam-31618",
-  storageBucket: "palavras-que-curam-31618.firebasestorage.app",
-  messagingSenderId: "429106595963",
-  appId: "1:429106595963:web:a09268aed0d08518057ade"
-};
+    apiKey: "AIzaSyC6EWkFSg6bBExoH4-GlV_dt80WlR9XfOk",
+    authDomain: "palavras-que-curam-31618.firebaseapp.com",
+    projectId: "palavras-que-curam-31618",
+    storageBucket: "palavras-que-curam-31618.appspot.com",
+    messagingSenderId: "429106595963",
+    appId: "1:429106595963:web:a09268aed0d08518057ade"
+  };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth();
+  const db = getFirestore();
+  const LIMITE_DIARIO = 3;
 
-  // Controle de sessão
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, async user => {
     const authArea = document.getElementById("authArea");
     const userArea = document.getElementById("userArea");
     const geradorForm = document.getElementById("geradorForm");
@@ -194,7 +140,6 @@ document.getElementById("whatsBtn").addEventListener("click",()=>{
     }
   });
 
-  // Criar conta
   window.registrar = async function () {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
@@ -206,7 +151,6 @@ document.getElementById("whatsBtn").addEventListener("click",()=>{
     }
   };
 
-  // Entrar
   window.entrar = async function () {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
@@ -218,8 +162,77 @@ document.getElementById("whatsBtn").addEventListener("click",()=>{
     }
   };
 
-  // Sair
   window.sair = async function () {
     await signOut(auth);
   };
+
+  const mensagens = {
+    perdao:[
+      "Se eu pudesse voltar no tempo, {{nome}}, faria tudo diferente. Hoje, só posso te oferecer meu arrependimento sincero e a vontade de reconstruir nossa história lado a lado.",
+      "Errar com você foi o golpe mais duro que já me dei. Peço perdão, {{nome}}, e a chance de mostrar que aprendi com cada dor que causei."
+    ],
+    reconquista:[
+      "{{nome}}, não estou aqui para insistir nem pressionar. Só quero dizer que o sentimento permanece inteiro e que, se ainda houver espaço, quero recomeçar com verdade e calma.",
+      "Nada do que vivi se compara ao que sonhei viver ao seu lado. Caso exista uma brecha, {{nome}}, quero tentar outra vez – com mais amor e sensatez."
+    ],
+    paz:[
+      "Nem todo amor termina; às vezes, ele encontra outra forma. Desejo que sua vida seja leve, {{nome}}, mesmo se nossos caminhos seguirem distantes.",
+      "Que a paz encontre você, {{nome}}. Guardo respeito e carinho pelo que fomos e pelo que cada um ainda pode ser."
+    ]
+  };
+
+  document.getElementById("geradorForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const uid = user.uid;
+    const today = new Date().toISOString().split("T")[0];
+    const docRef = doc(db, "limites", uid);
+    const docSnap = await getDoc(docRef);
+
+    let dados = { data: today, contador: 0 };
+
+    if (docSnap.exists()) {
+      const dataSalva = docSnap.data();
+      if (dataSalva.data === today) {
+        if (dataSalva.contador >= LIMITE_DIARIO) {
+          alert("Você atingiu o limite gratuito de hoje. Volte amanhã ou assine para acesso ilimitado.");
+          return;
+        } else {
+          dados = dataSalva;
+        }
+      }
+    }
+
+    dados.contador += 1;
+    dados.data = today;
+    await setDoc(docRef, dados);
+
+    const cat = document.getElementById("categoria").value;
+    const nome = document.getElementById("nome").value.trim() || "você";
+    const texto = mensagens[cat][Math.floor(Math.random()*mensagens[cat].length)].replace(/\{\{nome\}\}/g, nome);
+
+    const res = document.getElementById("resultado");
+    res.textContent = texto;
+    res.style.display = "block";
+    document.getElementById("acoes").style.display = "flex";
+  });
+
+  document.getElementById("copiarBtn").addEventListener("click",()=>{
+    const txt=document.getElementById("resultado").textContent;
+    navigator.clipboard.writeText(txt).then(()=>{
+      alert("Copiado!");
+      gtag&&gtag('event','copiar_mensagem');
+    });
+  });
+
+  document.getElementById("whatsBtn").addEventListener("click",()=>{
+    const txt=document.getElementById("resultado").textContent;
+    const url=`https://wa.me/?text=${encodeURIComponent(txt)}`;
+    window.open(url,"_blank");
+    gtag&&gtag('event','whatsapp_share');
+  });
 </script>
+</body>
+</html>
