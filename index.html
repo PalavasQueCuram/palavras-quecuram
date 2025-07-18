@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Palavras que Curam | Mensagens para Perdão, Reconquista e Paz</title>
+  <meta name="description" content="Gere cartas e mensagens emocionais prontas para perdão, reconquista e paz. Copie ou compartilhe com um clique." />
+  <meta name="keywords" content="mensagem de perdão, carta de reconquista, frases emocionais, palavras que curam, reconciliação" />
+  <meta property="og:title" content="Palavras que Curam" />
+  <meta property="og:description" content="Crie mensagens personalizadas para quem você ama: perdão, reconquista, paz e muito mais." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://palavras-quecuram.vercel.app" />
+  <!-- /SEO -->
+
+  <!-- Google Analytics GA‏-4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-79LF955TM4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-79LF955TM4');
+  </script>
+  <!-- /GA -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Open+Sans&display=swap" rel="stylesheet" />
+  <style>
+    body{
+      font-family:'Open Sans',sans-serif;
+      background:linear-gradient(135deg,#6a7a8c,#a0b0bf,#d9e2e8);
+      background-attachment:fixed;
+      color:#3b3b3b;margin:0;padding:0
+    }
+    header{text-align:center;padding:2rem}
+    h1{font-family:'Satisfy',cursive;font-size:3rem;color:#6e41a2;margin:0}
+    p{font-size:1.2rem;max-width:700px;margin:1rem auto;line-height:1.6}
+    main{padding:0 1rem 2rem}
+    button{background:#6e41a2;color:#fff;padding:.8rem 1.6rem;border:none;border-radius:8px;font-size:1rem;cursor:pointer;transition:background .3s}
+    button:hover{background:#5a2f8b}
+    form{max-width:500px;margin:2rem auto;display:flex;flex-direction:column;gap:1rem}
+    select,input{padding:.6rem .8rem;border:1px solid #ccc;border-radius:6px;font-size:1rem}
+    .actions{display:flex;justify-content:center;gap:1rem;margin-top:1rem}
+    #resultado{max-width:700px;margin:2rem auto;padding:1.5rem;background:#fff;border-left:6px solid #6e41a2;border-radius:8px;font-size:1.2rem;line-height:1.6;display:none;box-shadow:0 2px 12px rgba(0,0,0,.06);font-style:italic}
+    footer{text-align:center;padding:1rem;font-size:.9rem;color:#888}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Palavras que Curam</h1>
+  <p>Reconquiste. Perdoe. Inspire. Envie mensagens emocionais criadas sob medida para momentos que pedem mais do que palavras comuns.</p>
+</header>
+
+<div id="authArea" style="max-width:400px;margin:2rem auto;display:none;text-align:center">
+  <h2>Entrar / Criar Conta</h2>
+  <input type="email" id="email" placeholder="E-mail" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
+  <input type="password" id="senha" placeholder="Senha" style="margin:0.5rem;width:90%;padding:0.5rem" /><br />
+  <button onclick="registrar()">Criar conta</button>
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<div style="text-align:center;display:none" id="userArea">
+  <p>Bem-vindo, <span id="userEmail"></span>!</p>
+  <button onclick="sair()">Sair</button>
+</div>
+
+<main>
+  <p><strong>Você errou com quem ama? Está tentando reconquistar alguém importante? Ou apenas precisa dizer o que sente, mas não sabe como?</strong></p>
+  <p><strong>Palavras que Curam</strong> gera mensagens personalizadas para reconciliação, perdão, recomeços e momentos difíceis.</p>
+
+  <form id="geradorForm">
+    <label for="categoria">Escolha a categoria:</label>
+    <select id="categoria" required>
+      <option value="perdao">Perdão</option>
+      <option value="reconquista">Reconquista</option>
+      <option value="paz">Paz</option>
+    </select>
+
+    <label for="nome">Nome da pessoa (opcional):</label>
+    <input type="text" id="nome" placeholder="Ex.: Clara" />
+
+    <button id="gerarBtn" type="submit">Gerar mensagem</button>
+  </form>
+
+  <div id="resultado"></div>
+  <div class="actions" id="acoes" style="display:none">
+    <button id="copiarBtn">Copiar mensagem</button>
+    <button id="whatsBtn">Compartilhar no WhatsApp</button>
+  </div>
+</main>
+
+<footer>
+  © 2025 Palavras que Curam · Feito com alma para quem sente.
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6EWkFSg6bBExoH4-GlV_dt80WlR9XfOk",
+    authDomain: "palavras-que-curam-31618.firebaseapp.com",
+    projectId: "palavras-que-curam-31618",
+    storageBucket: "palavras-que-curam-31618.appspot.com",
+    messagingSenderId: "429106595963",
+    appId: "1:429106595963:web:a09268aed0d08518057ade"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+
+  const mensagens = {
+    perdao: [
+      "Se eu pudesse voltar no tempo, {{nome}}, faria tudo diferente. Hoje, só posso te oferecer meu arrependimento sincero e a vontade de reconstruir nossa história lado a lado.",
+      "Errar com você foi o golpe mais duro que já me dei. Peço perdão, {{nome}}, e a chance de mostrar que aprendi com cada dor que causei."
+    ],
+    reconquista: [
+      "{{nome}}, não estou aqui para insistir nem pressionar. Só quero dizer que o sentimento permanece inteiro e que, se ainda houver espaço, quero recomeçar com verdade e calma.",
+      "Nada do que vivi se compara ao que sonhei viver ao seu lado. Caso exista uma brecha, {{nome}}, quero tentar outra vez – com mais amor e sensatez."
+    ],
+    paz: [
+      "Nem todo amor termina; às vezes, ele encontra outra forma. Desejo que sua vida seja leve, {{nome}}, mesmo se nossos caminhos seguirem distantes.",
+      "Que a paz encontre você, {{nome}}. Guardo respeito e carinho pelo que fomos e pelo que cada um ainda pode ser."
+    ]
+  };
+
+  document.getElementById("geradorForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const cat = document.getElementById("categoria").value;
+    const nome = document.getElementById("nome").value.trim() || "você";
+    const texto = mensagens[cat][Math.floor(Math.random() * mensagens[cat].length)].replace(/\{\{nome\}\}/g, nome);
+
+    const res = document.getElementById("resultado");
+    res.textContent = texto;
+    res.style.display = "block";
+    document.getElementById("acoes").style.display = "flex";
+    if (typeof gtag === "function") gtag('event', 'gerar_mensagem', { categoria: cat });
+  });
+
+  onAuthStateChanged(auth, user => {
+    const authArea = document.getElementById("authArea");
+    const userArea = document.getElementById("userArea");
+    const geradorForm = document.getElementById("geradorForm");
+    const acoes = document.getElementById("acoes");
+
+    if (user) {
+      document.getElementById("userEmail").textContent = user.email;
+      authArea.style.display = "none";
+      userArea.style.display = "block";
+      geradorForm.style.display = "block";
+    } else {
+      userArea.style.display = "none";
+      authArea.style.display = "block";
+      geradorForm.style.display = "none";
+      acoes.style.display = "none";
+      document.getElementById("resultado").style.display = "none";
+    }
+  });
+
+  window.registrar = async function () {
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    try {
+      await createUserWithEmailAndPassword(auth, email, senha);
+      alert("Conta criada!");
+    } catch (e) {
+      alert("Erro: " + e.message);
+    }
+  };
+
+  window.entrar = async function () {
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+      alert("Login bem-sucedido!");
+    } catch (e) {
+      alert("Erro: " + e.message);
+    }
+  };
+
+  window.sair = async function () {
+    await signOut(auth);
+  };
+
+  document.getElementById("copiarBtn").addEventListener("click", () => {
+    const txt = document.getElementById("resultado").textContent;
+    navigator.clipboard.writeText(txt).then(() => {
+      alert("Copiado!");
+      if (typeof gtag === "function") gtag('event', 'copiar_mensagem');
+    });
+  });
+
+  document.getElementById("whatsBtn").addEventListener("click", () => {
+    const txt = document.getElementById("resultado").textContent;
+    const url = `https://wa.me/?text=${encodeURIComponent(txt)}`;
+    window.open(url, "_blank");
+    if (typeof gtag === "function") gtag('event', 'whatsapp_share');
+  });
+</script>
+</body>
+</html>
